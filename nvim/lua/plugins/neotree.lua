@@ -8,5 +8,10 @@ return {
   },
   lazy = false,
   opts = {
+    filesystem = {
+      filtered_items = {
+        hide_gitignored = false,
+      },
+    },
   },
 }

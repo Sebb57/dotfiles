@@ -142,11 +142,11 @@ autocmd BufNewFile *.hs call InsertHeaderHaskell()
 ]])
 
 local header_options = {
-    { label = "C", func = "InsertHeaderC" },
     { label = ".h", func = "InsertHeaderH" },
-    { label = "Python", func = "InsertHeaderPython" },
     { label = "Makefile", func = "InsertHeaderMakefile" },
+    { label = "Python", func = "InsertHeaderPython" },
     { label = "Haskell", func = "InsertHeaderHaskell" },
+    { label = "C", func = "InsertHeaderC" },
 }
 
 vim.keymap.set("n", "<C-h>", function()

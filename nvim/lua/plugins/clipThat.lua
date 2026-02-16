@@ -1,6 +1,6 @@
 return {
     -- dir="~/perso/clipThat/",
-    "DoussangSebastien/clipThat.nvim",
+    "Sebb57/clipThat.nvim",
     opts = {
         max_history = 7,
         default_keybind = true,

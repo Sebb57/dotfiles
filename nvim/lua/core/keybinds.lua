@@ -16,8 +16,8 @@ keymap.set("v", "<", "<gv")
 keymap.set("v", ">", ">gv")
 
 -- Ctrl + Z and Ctrl + Shift + Z
-keymap.set("n", "<C-z>", "u", { noremap = true })
-keymap.set("n", "<C-S-z>", "<C-r>", { noremap = true })
+-- keymap.set("n", "<C-z>", "u", { noremap = true })
+-- keymap.set("n", "<C-S-z>", "<C-r>", { noremap = true })
 
 -- nvim-tree
 keymap.set("n", "<leader>e", ":Neotree<CR>")
