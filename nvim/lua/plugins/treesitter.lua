@@ -9,7 +9,11 @@ return {
       'nvim-treesitter/nvim-treesitter-refactor',
     },
     config = function()
+      local parser_install_dir = vim.fn.stdpath("data") .. "/site"
+      vim.opt.runtimepath:prepend(parser_install_dir)
+
       require('nvim-treesitter.configs').setup {
+        parser_install_dir = parser_install_dir,
         ensure_installed = {
           "c", "lua", "vim", "python", "make", "rust", "go", "cpp", "bash", "json", "yaml", "markdown", "dockerfile"
         },
@@ -24,7 +28,7 @@ return {
         indent = { enable = true },
 
         refactor = {
-          highlight_definitions = { enable = true },
+          highlight_definitions = { enable = false },
           highlight_current_scope = { enable = false },
           smart_rename = {
             enable = true,
