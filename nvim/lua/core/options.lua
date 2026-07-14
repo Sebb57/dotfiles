@@ -52,7 +52,7 @@ set shiftwidth=4
 set shiftround
 set smartindent
 
-function! InsertHeaderC()
+function! InsertHeaderCE()
     let l:filename = expand("%:t")
     let l:dirname = fnamemodify(getcwd(), ':t') " Get current directory name
     let l:header = [
@@ -98,7 +98,7 @@ function! InsertHeaderPython()
     call append(0, l:header)
 endfunction
 
-function! InsertHeaderH()
+function! InsertHeaderHE()
     let l:filename = expand("%:t")
     let l:dirname = fnamemodify(getcwd(), ':t')
     let l:macro_name = substitute(toupper(l:filename), '\.', '_', 'g') . '_'
@@ -132,6 +132,53 @@ function! InsertHeaderHaskell()
     call append(0, l:header)
 endfunction
 
+function! InsertHeaderH()
+    let l:filename = expand('%:t')
+    let l:author = 'Seb'
+    let l:date = strftime('%Y-%m-%d')
+    let l:brief = input('Brief description: ')
+
+    let l:macro_name = substitute(toupper(l:filename), '\.', '_', 'g') . '_'
+
+    let l:header = [
+                \ '/**',
+                \ ' * @file ' . l:filename,
+                \ ' * @brief ' . l:brief,
+                \ ' *',
+                \ ' * @author ' . l:author,
+                \ ' * @date ' . l:date,
+                \ '**/',
+                \ '',
+                \ '#ifndef ' . l:macro_name,
+                \ '#define ' . l:macro_name,
+                \ '',
+                \ '',
+                \ '#endif /* ' . l:macro_name . ' */',
+                \ ]
+
+    call append(0, l:header)
+endfunction
+
+function! InsertHeaderCpp()
+    let l:filename = expand('%:t')
+    let l:author = 'Your Name'
+    let l:date = strftime('%Y-%m-%d')
+    let l:brief = input('Brief description: ')
+
+    let l:header = [
+                \ '/**',
+                \ ' * @file ' . l:filename,
+                \ ' * @brief ' . l:brief,
+                \ ' *',
+                \ ' * @author ' . l:author,
+                \ ' * @date ' . l:date,
+                \ '**/',
+                \ '',
+                \ ]
+
+    call append(0, l:header)
+endfunction
+
 nnoremap <C-p> :call InsertHeaderPython()<CR>
 
 autocmd BufNewFile *.c call InsertHeaderC()
@@ -143,10 +190,12 @@ autocmd BufNewFile *.hs call InsertHeaderHaskell()
 
 local header_options = {
     { label = ".h", func = "InsertHeaderH" },
+    { label = "cpp", func = "InsertHeaderCpp" },
+    { label = ".h (epitech)", func = "InsertHeaderHE" },
     { label = "Makefile", func = "InsertHeaderMakefile" },
     { label = "Python", func = "InsertHeaderPython" },
     { label = "Haskell", func = "InsertHeaderHaskell" },
-    { label = "C", func = "InsertHeaderC" },
+    { label = "C (epitech)", func = "InsertHeaderCE" },
 }
 
 vim.keymap.set("n", "<C-h>", function()
