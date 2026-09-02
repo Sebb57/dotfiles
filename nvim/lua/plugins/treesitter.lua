@@ -15,13 +15,32 @@ return {
       require('nvim-treesitter.configs').setup {
         parser_install_dir = parser_install_dir,
         ensure_installed = {
-          "c", "lua", "vim", "python", "make", "rust", "go", "cpp", "bash", "json", "yaml", "markdown", "dockerfile"
+          "c",
+          "cpp",
+          "css",
+          "dockerfile",
+          "html",
+          "javascript",
+          "json",
+          "jsonc",
+          "lua",
+          "markdown",
+          "markdown_inline",
+          "python",
+          "rust",
+          "tsx",
+          "typescript",
+          "vim",
+          "yaml",
+          "bash",
+          "go",
+          "graphql",
         },
         sync_install = false,
         auto_install = true,
 
         highlight = {
-          enable = false,
+          enable = true,
           additional_vim_regex_highlighting = false,
         },
 
@@ -37,6 +56,14 @@ return {
           },
         },
       }
+    end,
+  },
+
+  {
+    "windwp/nvim-ts-autotag",
+    event = "InsertEnter",
+    config = function()
+      require("nvim-ts-autotag").setup()
     end,
   },
 

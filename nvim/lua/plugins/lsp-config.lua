@@ -8,6 +8,9 @@ return {
         ts_config = {
           lua = { "string" },
           javascript = { "template_string" },
+          javascriptreact = { "template_string" },
+          typescript = { "template_string" },
+          typescriptreact = { "template_string" },
         },
         disable_filetype = { "TelescopePrompt", "spectre_panel" },
         fast_wrap = {
@@ -51,6 +54,9 @@ return {
           'ts_ls',
           'html',
           'cssls',
+          'eslint',
+          'tailwindcss',
+          'emmet_ls',
           'rust_analyzer',
           'gopls',
         },
@@ -77,6 +83,7 @@ return {
       local cmp = require('cmp')
       local luasnip = require('luasnip')
       local lspkind = require('lspkind')
+      local ok_autopairs, cmp_autopairs = pcall(require, 'nvim-autopairs.completion.cmp')
       
       require("luasnip.loaders.from_vscode").lazy_load()
       
@@ -98,6 +105,8 @@ return {
           })
         },
         mapping = cmp.mapping.preset.insert({
+          ['<C-Space>'] = cmp.mapping.complete(),
+          ['<C-e>'] = cmp.mapping.abort(),
           ['<CR>'] = cmp.mapping.confirm({ select = true }),
           ['<Up>'] = cmp.mapping.select_prev_item(),
           ['<Down>'] = cmp.mapping.select_next_item(),
@@ -134,6 +143,10 @@ return {
           },
         },
       })
+
+      if ok_autopairs then
+        cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+      end
       
       cmp.setup.cmdline({ '/', '?' }, {
         mapping = cmp.mapping.preset.cmdline(),
@@ -234,6 +247,33 @@ return {
             }
           }
         },
+        eslint = {
+          settings = {
+            workingDirectory = { mode = 'auto' },
+          },
+        },
+        tailwindcss = {
+          settings = {
+            tailwindCSS = {
+              lint = {
+                invalidApply = 'error',
+              },
+            },
+          },
+        },
+        emmet_ls = {
+          filetypes = {
+            'html',
+            'css',
+            'scss',
+            'sass',
+            'less',
+            'javascriptreact',
+            'typescriptreact',
+            'javascript',
+            'typescript',
+          },
+        },
       }
       
       local on_attach = function(client, bufnr)
@@ -247,8 +287,14 @@ return {
         vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
         vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
         vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, opts)
-        vim.keymap.set('n', '<space>f', function() 
-          vim.lsp.buf.format { async = true } 
+        vim.keymap.set('n', '<space>f', function()
+          local ok, conform = pcall(require, 'conform')
+          if ok then
+            conform.format({ async = true, lsp_fallback = true })
+            return
+          end
+
+          vim.lsp.buf.format({ async = true })
         end, opts)
         
         vim.keymap.set('n', '<leader>h', function()

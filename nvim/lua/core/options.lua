@@ -11,6 +11,9 @@ vim.opt.expandtab = true
 -- line numbers
 vim.opt.relativenumber = false
 vim.opt.number = true
+vim.opt.signcolumn = "yes"
+vim.opt.completeopt = { "menu", "menuone", "noselect" }
+vim.opt.pumheight = 12
 
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*",
@@ -29,6 +32,26 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 
 --clipboard
 vim.opt.clipboard:append("unnamedplus")
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = {
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "json",
+    "jsonc",
+    "css",
+    "html",
+    "markdown",
+  },
+  callback = function()
+    vim.opt_local.tabstop = 2
+    vim.opt_local.softtabstop = 2
+    vim.opt_local.shiftwidth = 2
+    vim.opt_local.expandtab = true
+  end,
+})
 
 
 --start LSP
@@ -161,7 +184,7 @@ endfunction
 
 function! InsertHeaderCpp()
     let l:filename = expand('%:t')
-    let l:author = 'Your Name'
+    let l:author = 'Seb'
     let l:date = strftime('%Y-%m-%d')
     let l:brief = input('Brief description: ')
 
